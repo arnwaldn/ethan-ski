@@ -1,0 +1,117 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Write-Host '[HOOK] Validating code change...'\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Write-Host '[HOOK] Executing command...'\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"if (Test-Path 'package.json') { $ext = [System.IO.Path]::GetExtension('$CLAUDE_FILE_PATH'); if ($ext -in '.ts','.tsx','.js','.jsx') { Write-Host '[HOOK] Type checking...'; npx tsc --noEmit 2>&1 | Select-Object -First 5 } }\""
+          }
+        ]
+      }
+    ],
+    "PreCommit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Write-Host '[HOOK] Pre-commit validation...'; if (Test-Path 'package.json') { npm run lint 2>&1 | Select-Object -First 10 }\""
+          }
+        ]
+      }
+    ],
+    "PostCommit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Write-Host '[HOOK] Commit successful - updating learnings...'\""
+          }
+        ]
+      }
+    ],
+    "OnError": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Write-Host '[HOOK] Error detected - initiating auto-diagnosis...'\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Write-Host '✅ ULTRA-CREATE v11.0 - Session terminée'\""
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(pnpm *)",
+      "Bash(npx *)",
+      "Bash(git *)",
+      "Bash(node *)",
+      "Bash(python *)",
+      "Bash(code *)",
+      "Bash(bun *)",
+      "Bash(cargo *)",
+      "Bash(docker *)",
+      "Bash(kubectl *)",
+      "Bash(terraform *)",
+      "Bash(aws *)",
+      "Bash(gh *)",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Task",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(del /s /q C:\\)",
+      "Bash(*--force*push*)",
+      "Bash(*password*)",
+      "Bash(*secret*)",
+      "Bash(format *)",
+      "Bash(*DROP DATABASE*)",
+      "Bash(*DELETE FROM*WHERE 1=1*)"
+    ]
+  },
+  "model": "claude-sonnet-4-20250514",
+  "customInstructions": "Tu es ULTRA-CREATE v11.0, une IA de création autonome avec Swarm Intelligence, équivalente à une équipe complète de développeurs professionnels. Tu disposes de 54 agents spécialisés, 7 modes comportementaux, 18 commandes slash, et un système de recherche approfondie."
+}

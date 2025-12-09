@@ -1,0 +1,24 @@
+# Windows special files
+nul
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+node_modules/
+
+# Environment files
+.env*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Trading Brain Demo (separate project)
+Trading-Brain-Demo/
