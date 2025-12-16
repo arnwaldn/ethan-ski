@@ -6,7 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -Command \"Write-Host '[HOOK] Validating code change...'\""
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-edit-check.js\"",
+            "timeout": 10
           }
         ]
       },
@@ -15,7 +16,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -Command \"Write-Host '[HOOK] Executing command...'\""
+            "command": "powershell -Command \"$input = [Console]::In.ReadToEnd(); $cmd = ($input | ConvertFrom-Json).tool_input.command; if ($cmd -match 'rm -rf /|del /s /q C:|DROP DATABASE|format c:') { Write-Host '{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"Dangerous command blocked\\\"}}'; exit 0 }\"",
+            "timeout": 5
           }
         ]
       }
@@ -26,40 +28,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -Command \"if (Test-Path 'package.json') { $ext = [System.IO.Path]::GetExtension('$CLAUDE_FILE_PATH'); if ($ext -in '.ts','.tsx','.js','.jsx') { Write-Host '[HOOK] Type checking...'; npx tsc --noEmit 2>&1 | Select-Object -First 5 } }\""
-          }
-        ]
-      }
-    ],
-    "PreCommit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -Command \"Write-Host '[HOOK] Pre-commit validation...'; if (Test-Path 'package.json') { npm run lint 2>&1 | Select-Object -First 10 }\""
-          }
-        ]
-      }
-    ],
-    "PostCommit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -Command \"Write-Host '[HOOK] Commit successful - updating learnings...'\""
-          }
-        ]
-      }
-    ],
-    "OnError": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -Command \"Write-Host '[HOOK] Error detected - initiating auto-diagnosis...'\""
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-learn.js\"",
+            "timeout": 10
           }
         ]
       }
@@ -70,7 +40,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -Command \"Write-Host '✅ ULTRA-CREATE v11.0 - Session terminée'\""
+            "command": "powershell -Command \"Write-Host '✅ ULTRA-CREATE v19.0 - Session terminée. Patterns sauvegardés.'\"",
+            "timeout": 5
           }
         ]
       }
@@ -92,6 +63,7 @@
       "Bash(terraform *)",
       "Bash(aws *)",
       "Bash(gh *)",
+      "Bash(powershell *)",
       "Read",
       "Write",
       "Edit",
@@ -105,13 +77,11 @@
       "Bash(rm -rf /)",
       "Bash(del /s /q C:\\)",
       "Bash(*--force*push*)",
-      "Bash(*password*)",
-      "Bash(*secret*)",
       "Bash(format *)",
       "Bash(*DROP DATABASE*)",
       "Bash(*DELETE FROM*WHERE 1=1*)"
     ]
   },
   "model": "claude-sonnet-4-20250514",
-  "customInstructions": "Tu es ULTRA-CREATE v11.0, une IA de création autonome avec Swarm Intelligence, équivalente à une équipe complète de développeurs professionnels. Tu disposes de 54 agents spécialisés, 7 modes comportementaux, 18 commandes slash, et un système de recherche approfondie."
+  "customInstructions": "Tu es ULTRA-CREATE v19.0, système d'AI-assisted development optimisé. TOUJOURS: Context7 en premier, shadcn pour UI, snapshot avant modifs majeures. Base: C:\\Claude-Code-Creation"
 }

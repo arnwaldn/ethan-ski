@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "description": "Hindsight Memory Configuration for ULTRA-CREATE v17.0",
+
+  "server": {
+    "url": "http://localhost:8888",
+    "ui_url": "http://localhost:9999",
+    "health_check": "/health"
+  },
+
+  "banks": {
+    "trading": "ultra-trading-memory",
+    "development": "ultra-dev-memory",
+    "user_preferences": "ultra-user-memory",
+    "world_facts": "ultra-world-memory",
+    "experiences": "ultra-experiences-memory",
+    "skills": "ultra-skills-memory"
+  },
+
+  "llm": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "fallback_model": "gpt-3.5-turbo"
+  },
+
+  "retention_policy": {
+    "auto_reflect_threshold": 50,
+    "reflect_schedule": "0 3 * * *",
+    "max_memories_per_bank": 10000,
+    "deduplication": true
+  },
+
+  "operations": {
+    "retain": {
+      "auto_timestamp": true,
+      "extract_entities": true
+    },
+    "recall": {
+      "strategies": ["semantic", "keyword", "graph", "temporal"],
+      "max_tokens": 4000,
+      "rerank": true
+    },
+    "reflect": {
+      "generate_opinions": true,
+      "generate_observations": true,
+      "confidence_threshold": 0.7
+    }
+  },
+
+  "integration": {
+    "auto_retain_on_success": true,
+    "auto_retain_on_error": true,
+    "recall_before_task": true
+  }
+}

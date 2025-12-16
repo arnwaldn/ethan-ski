@@ -1,0 +1,155 @@
+{
+  "version": "1.0.0",
+  "description": "Profils de chargement MCP pour optimiser les performances",
+
+  "profiles": {
+    "minimal": {
+      "description": "Serveurs essentiels uniquement - demarrage rapide",
+      "servers": ["memory", "filesystem", "git"],
+      "use_case": "Taches simples, navigation fichiers"
+    },
+
+    "development": {
+      "description": "Environnement de developpement complet",
+      "servers": [
+        "context7",
+        "shadcn",
+        "supabase",
+        "hindsight",
+        "memory",
+        "filesystem",
+        "git",
+        "github",
+        "vscode",
+        "sqlite",
+        "sequential-thinking"
+      ],
+      "use_case": "Developpement quotidien"
+    },
+
+    "trading": {
+      "description": "Trading et analyse de marche",
+      "servers": [
+        "hindsight",
+        "sequential-thinking",
+        "memory",
+        "filesystem"
+      ],
+      "use_case": "Trading, analyse technique, gestion memoire trading"
+    },
+
+    "web": {
+      "description": "Scraping et automatisation web",
+      "servers": [
+        "puppeteer",
+        "playwright",
+        "firecrawl",
+        "tavily",
+        "exa",
+        "fetch"
+      ],
+      "use_case": "Recherche web, scraping, tests E2E"
+    },
+
+    "data": {
+      "description": "Traitement de donnees et bases de donnees",
+      "servers": [
+        "postgres",
+        "supabase",
+        "neo4j",
+        "sqlite",
+        "prisma"
+      ],
+      "use_case": "Operations base de donnees"
+    },
+
+    "deployment": {
+      "description": "Deploiement en production",
+      "servers": [
+        "cloudflare",
+        "sentry",
+        "stripe",
+        "posthog",
+        "expo"
+      ],
+      "use_case": "CI/CD et monitoring production"
+    },
+
+    "ai": {
+      "description": "Integrations AI/ML",
+      "servers": [
+        "openai",
+        "huggingface",
+        "replicate",
+        "e2b"
+      ],
+      "use_case": "Generation IA, inference ML"
+    },
+
+    "ui": {
+      "description": "Design et composants UI",
+      "servers": [
+        "shadcn",
+        "magic-ui",
+        "figma",
+        "mermaid"
+      ],
+      "use_case": "Creation interfaces utilisateur"
+    },
+
+    "research": {
+      "description": "Recherche et documentation",
+      "servers": [
+        "context7",
+        "tavily",
+        "exa",
+        "firecrawl",
+        "fetch"
+      ],
+      "use_case": "Recherche approfondie, documentation"
+    },
+
+    "automation": {
+      "description": "Automatisation et integration",
+      "servers": [
+        "make",
+        "zapier",
+        "linear",
+        "notion"
+      ],
+      "use_case": "Workflows automatises, gestion projet"
+    },
+
+    "quality": {
+      "description": "Qualite et securite du code",
+      "servers": [
+        "sonarqube",
+        "semgrep",
+        "sentry"
+      ],
+      "use_case": "Audit securite, qualite code"
+    },
+
+    "full": {
+      "description": "Tous les serveurs (utiliser avec precaution)",
+      "servers": ["*"],
+      "use_case": "Projets complexes multi-domaines",
+      "warning": "Impact performances significatif"
+    }
+  },
+
+  "auto_load": {
+    "on_startup": ["minimal"],
+    "on_demand": true,
+    "timeout_inactive_ms": 300000,
+    "max_concurrent_servers": 15
+  },
+
+  "combinations": {
+    "saas_project": ["development", "ui", "data", "deployment"],
+    "landing_page": ["minimal", "ui"],
+    "api_backend": ["development", "data"],
+    "mobile_app": ["development", "ui", "deployment"],
+    "research_task": ["minimal", "research"]
+  }
+}

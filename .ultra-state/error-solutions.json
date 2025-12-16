@@ -1,0 +1,18 @@
+{
+  "projectId": "error-solutions",
+  "updatedAt": "2025-12-16T00:00:00.000Z",
+  "pairs": [
+    {
+      "error": "Hindsight Database migration failed",
+      "solution": "Bug PostgreSQL race condition sur Windows - utiliser MCP Memory comme fallback",
+      "context": { "system": "hindsight", "platform": "windows" },
+      "recordedAt": "2025-12-16T00:00:00.000Z"
+    },
+    {
+      "error": "Module not found: @supabase/supabase-js",
+      "solution": "npm install @supabase/supabase-js",
+      "context": { "framework": "supabase" },
+      "recordedAt": "2025-12-16T00:00:00.000Z"
+    }
+  ]
+}

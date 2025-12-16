@@ -11,6 +11,19 @@ node_modules/
 # Environment files
 .env*
 !.env.example
+.env.secrets
+
+# Security - Never commit
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# API Keys backup
+*-api-keys.json
+*-tokens.json
 
 # IDE
 .vscode/

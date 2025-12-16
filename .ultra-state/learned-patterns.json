@@ -1,0 +1,35 @@
+{
+  "projectId": "learned-patterns",
+  "updatedAt": "2025-12-16T00:00:00.000Z",
+  "patterns": [
+    {
+      "content": "TOUJOURS utiliser Context7 avant de générer du code framework",
+      "context": {
+        "category": "mcp",
+        "priority": "critical"
+      },
+      "learnedAt": "2025-12-16T00:00:00.000Z"
+    },
+    {
+      "content": "Créer un snapshot avant toute modification majeure",
+      "context": {
+        "category": "safety",
+        "tool": "auto-rollback.js"
+      },
+      "learnedAt": "2025-12-16T00:00:00.000Z"
+    },
+    {
+      "content": "Utiliser shadcn pour TOUT composant UI - pas de CSS custom",
+      "context": {
+        "category": "ui",
+        "framework": "react"
+      },
+      "learnedAt": "2025-12-16T00:00:00.000Z"
+    },
+    {
+      "content": "Test pattern from verification",
+      "context": {},
+      "learnedAt": "2025-12-16T21:27:03.184Z"
+    }
+  ]
+}

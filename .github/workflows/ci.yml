@@ -1,0 +1,202 @@
+name: ULTRA-CREATE CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  validate:
+    name: Validate Configuration
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Validate JSON configs
+        shell: pwsh
+        run: |
+          Write-Host "Validating JSON configuration files..." -ForegroundColor Cyan
+
+          $files = @(
+            "settings.json",
+            ".mcp.json",
+            "config/model-routing.json",
+            "config/mcp-profiles.json",
+            "config/context7-config.json",
+            "config/logging.json",
+            "memory/redis-schema.json",
+            "memory/decay-policy.json",
+            "agents/protocol.json",
+            "monitoring/dashboard.json"
+          )
+
+          $errors = @()
+          foreach ($file in $files) {
+            if (Test-Path $file) {
+              try {
+                $null = Get-Content $file -Raw | ConvertFrom-Json
+                Write-Host "  [OK] $file" -ForegroundColor Green
+              } catch {
+                Write-Host "  [FAIL] $file - Invalid JSON" -ForegroundColor Red
+                $errors += $file
+              }
+            } else {
+              Write-Host "  [SKIP] $file - Not found" -ForegroundColor Yellow
+            }
+          }
+
+          if ($errors.Count -gt 0) {
+            Write-Host ""
+            Write-Host "Validation failed for: $($errors -join ', ')" -ForegroundColor Red
+            exit 1
+          }
+
+          Write-Host ""
+          Write-Host "All JSON files valid!" -ForegroundColor Green
+
+      - name: Check for exposed secrets
+        shell: pwsh
+        run: |
+          Write-Host "Scanning for exposed secrets..." -ForegroundColor Cyan
+
+          $patterns = @(
+            'ghp_[a-zA-Z0-9]{36}',
+            'sk-[a-zA-Z0-9]{48}',
+            'sk_test_[a-zA-Z0-9]{24,}',
+            'sk_live_[a-zA-Z0-9]{24,}',
+            'sntryu_[a-zA-Z0-9]{64}',
+            'ntn_[a-zA-Z0-9]{50,}',
+            'r8_[a-zA-Z0-9]{36}',
+            'hf_[a-zA-Z0-9]{36}',
+            'lin_api_[a-zA-Z0-9]{40}'
+          )
+
+          $foundSecrets = $false
+
+          Get-ChildItem -Recurse -Include *.json,*.js,*.ts,*.md -Exclude node_modules | ForEach-Object {
+            $content = Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue
+            foreach ($pattern in $patterns) {
+              if ($content -match $pattern) {
+                Write-Host "  [WARN] Potential secret in: $($_.Name)" -ForegroundColor Yellow
+                $foundSecrets = $true
+              }
+            }
+          }
+
+          if ($foundSecrets) {
+            Write-Host ""
+            Write-Host "Warning: Potential secrets detected. Review before commit." -ForegroundColor Yellow
+          } else {
+            Write-Host "  No exposed secrets detected" -ForegroundColor Green
+          }
+
+  lint-agents:
+    name: Lint Agent Definitions
+    runs-on: windows-latest
+    needs: validate
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate agent structure
+        shell: pwsh
+        run: |
+          Write-Host "Validating agent definitions..." -ForegroundColor Cyan
+
+          $agentDirs = Get-ChildItem -Path "agents" -Directory -Recurse
+          $mdFiles = Get-ChildItem -Path "agents" -Filter "*.md" -Recurse
+
+          Write-Host "  Found $($agentDirs.Count) agent directories"
+          Write-Host "  Found $($mdFiles.Count) agent definition files"
+
+          # Check required files
+          $required = @(
+            "agents/protocol.json",
+            "agents/specialization/README.md"
+          )
+
+          foreach ($file in $required) {
+            if (Test-Path $file) {
+              Write-Host "  [OK] $file exists" -ForegroundColor Green
+            } else {
+              Write-Host "  [FAIL] $file missing" -ForegroundColor Red
+              exit 1
+            }
+          }
+
+  security-scan:
+    name: Security Scan
+    runs-on: windows-latest
+    needs: validate
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run security checks
+        shell: pwsh
+        run: |
+          Write-Host "Running security checks..." -ForegroundColor Cyan
+
+          # Check .gitignore for security entries
+          $gitignore = Get-Content ".gitignore" -Raw
+          $requiredEntries = @(".env.secrets", "*.key", "*.pem")
+
+          foreach ($entry in $requiredEntries) {
+            if ($gitignore -match [regex]::Escape($entry)) {
+              Write-Host "  [OK] .gitignore contains: $entry" -ForegroundColor Green
+            } else {
+              Write-Host "  [WARN] .gitignore missing: $entry" -ForegroundColor Yellow
+            }
+          }
+
+          # Check that .env.secrets is not committed
+          if (Test-Path ".env.secrets") {
+            $content = Get-Content ".env.secrets" -Raw
+            if ($content -match 'REPLACE_WITH') {
+              Write-Host "  [OK] .env.secrets contains placeholders" -ForegroundColor Green
+            } else {
+              Write-Host "  [WARN] .env.secrets may contain real values" -ForegroundColor Yellow
+            }
+          }
+
+  test-scripts:
+    name: Test PowerShell Scripts
+    runs-on: windows-latest
+    needs: validate
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test validate-mcp.ps1 syntax
+        shell: pwsh
+        run: |
+          Write-Host "Testing PowerShell scripts..." -ForegroundColor Cyan
+
+          $scripts = Get-ChildItem -Path "scripts" -Filter "*.ps1" -Recurse
+
+          foreach ($script in $scripts) {
+            try {
+              $null = [System.Management.Automation.PSParser]::Tokenize(
+                (Get-Content $script.FullName -Raw), [ref]$null
+              )
+              Write-Host "  [OK] $($script.Name) - Valid syntax" -ForegroundColor Green
+            } catch {
+              Write-Host "  [FAIL] $($script.Name) - Syntax error" -ForegroundColor Red
+              exit 1
+            }
+          }
