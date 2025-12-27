@@ -1,0 +1,27 @@
+{
+  "name": "claude-code-creation",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "> **AI-Assisted Development System with 48 MCPs, Super-Agents, and Cross-Session Memory**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnwaldn/ULTRA-CREATE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arnwaldn/ULTRA-CREATE/issues"
+  },
+  "homepage": "https://github.com/arnwaldn/ULTRA-CREATE#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1"
+  }
+}

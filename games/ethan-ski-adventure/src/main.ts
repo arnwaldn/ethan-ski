@@ -4117,25 +4117,138 @@ function setupInput() {
     }
   });
 
-  // Touch controls
-  let touchStartX = 0;
-  canvas.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
+  // Detect touch device and enable touch controls
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (isTouchDevice) {
+    document.body.classList.add('touch-enabled');
+    setupTouchControls();
+  }
+
+  // Fallback canvas touch for non-joystick areas (e.g., tap to start)
+  canvas.addEventListener('touchstart', () => {
     if (state.phase === 'title') {
       startCountdown();
     }
   });
+}
 
-  canvas.addEventListener('touchmove', (e) => {
-    const diff = e.touches[0].clientX - touchStartX;
-    const threshold = window.innerWidth * 0.05;
-    state.input.left = diff < -threshold;
-    state.input.right = diff > threshold;
-  });
+// ==================== TOUCH CONTROLS (JOYSTICK + AERO) ====================
+function setupTouchControls() {
+  const joystickBase = document.getElementById('joystick-base') as HTMLElement | null;
+  const joystickStick = document.getElementById('joystick-stick') as HTMLElement | null;
+  const aeroBtn = document.getElementById('aero-btn') as HTMLElement | null;
 
-  canvas.addEventListener('touchend', () => {
+  if (!joystickBase || !joystickStick || !aeroBtn) return;
+
+  // Type-safe references after null check
+  const base = joystickBase;
+  const stick = joystickStick;
+  const btn = aeroBtn;
+
+  // Joystick state
+  let joystickActive = false;
+  let joystickCenterX = 0;
+  let joystickCenterY = 0;
+  const maxDistance = 40; // Max stick movement in pixels
+  const deadZone = 0.15; // 15% dead zone
+
+  // Get joystick center position
+  function updateJoystickCenter() {
+    const rect = base.getBoundingClientRect();
+    joystickCenterX = rect.left + rect.width / 2;
+    joystickCenterY = rect.top + rect.height / 2;
+  }
+
+  // Joystick touch handlers
+  base.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    joystickActive = true;
+    stick.classList.add('active');
+    updateJoystickCenter();
+    handleJoystickMove(e);
+  }, { passive: false });
+
+  base.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    if (joystickActive) {
+      handleJoystickMove(e);
+    }
+  }, { passive: false });
+
+  base.addEventListener('touchend', () => {
+    joystickActive = false;
+    stick.classList.remove('active');
+    stick.style.transform = 'translate(0, 0)';
     state.input.left = false;
     state.input.right = false;
+  });
+
+  base.addEventListener('touchcancel', () => {
+    joystickActive = false;
+    stick.classList.remove('active');
+    stick.style.transform = 'translate(0, 0)';
+    state.input.left = false;
+    state.input.right = false;
+  });
+
+  function handleJoystickMove(e: TouchEvent) {
+    const touch = e.touches[0];
+    let deltaX = touch.clientX - joystickCenterX;
+    let deltaY = touch.clientY - joystickCenterY;
+
+    // Calculate distance from center
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    // Clamp to max distance
+    if (distance > maxDistance) {
+      deltaX = (deltaX / distance) * maxDistance;
+      deltaY = (deltaY / distance) * maxDistance;
+    }
+
+    // Move the stick visually
+    stick.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
+    // Calculate normalized X position (-1 to 1)
+    const normalizedX = deltaX / maxDistance;
+
+    // Apply dead zone
+    if (Math.abs(normalizedX) < deadZone) {
+      state.input.left = false;
+      state.input.right = false;
+    } else if (normalizedX < 0) {
+      state.input.left = true;
+      state.input.right = false;
+    } else {
+      state.input.left = false;
+      state.input.right = true;
+    }
+  }
+
+  // Aero button handlers
+  btn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    state.input.tuck = true;
+    btn.classList.add('active');
+  }, { passive: false });
+
+  btn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    state.input.tuck = false;
+    btn.classList.remove('active');
+  }, { passive: false });
+
+  btn.addEventListener('touchcancel', () => {
+    state.input.tuck = false;
+    btn.classList.remove('active');
+  });
+
+  // Handle orientation changes
+  window.addEventListener('orientationchange', () => {
+    setTimeout(updateJoystickCenter, 100);
+  });
+
+  window.addEventListener('resize', () => {
+    updateJoystickCenter();
   });
 }
 

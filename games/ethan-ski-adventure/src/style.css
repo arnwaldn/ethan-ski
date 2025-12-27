@@ -1032,3 +1032,235 @@ body {
     padding: 6px 12px;
   }
 }
+
+/* ===== TOUCH CONTROLS (JOYSTICK + AERO BUTTON) ===== */
+.touch-controls {
+  display: none; /* Hidden by default, shown on touch devices */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  pointer-events: none;
+  z-index: 1500;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Show touch controls on touch devices */
+.touch-enabled .touch-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/* Joystick Zone (left side) */
+.joystick-zone {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.joystick-base {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 0 20px rgba(0, 0, 0, 0.3),
+    inset 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.joystick-stick {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #b0b0b0);
+  border-radius: 50%;
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 2px 5px rgba(255, 255, 255, 0.8);
+  transition: transform 0.05s ease-out;
+  cursor: grab;
+}
+
+.joystick-stick:active {
+  cursor: grabbing;
+}
+
+.joystick-stick.active {
+  background: radial-gradient(circle at 30% 30%, #00d4ff, #0088aa);
+  box-shadow:
+    0 4px 20px rgba(0, 212, 255, 0.6),
+    inset 0 2px 5px rgba(255, 255, 255, 0.8);
+}
+
+.joystick-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  padding: 0 10px;
+}
+
+.joystick-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.joystick-label.left {
+  color: #ff6b6b;
+}
+
+.joystick-label.right {
+  color: #4ecdc4;
+}
+
+/* Aero Button Zone (right side) */
+.aero-btn-zone {
+  pointer-events: auto;
+}
+
+.aero-btn {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(255, 165, 0, 0.8), rgba(255, 100, 0, 0.9));
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow:
+    0 6px 20px rgba(255, 100, 0, 0.5),
+    inset 0 2px 10px rgba(255, 255, 255, 0.3);
+  transition: all 0.1s ease;
+  backdrop-filter: blur(4px);
+}
+
+.aero-btn:active,
+.aero-btn.active {
+  background: linear-gradient(145deg, rgba(0, 200, 255, 0.9), rgba(0, 150, 200, 1));
+  transform: scale(0.95);
+  box-shadow:
+    0 2px 10px rgba(0, 200, 255, 0.8),
+    inset 0 2px 10px rgba(255, 255, 255, 0.5);
+}
+
+.aero-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.aero-text {
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Direction indicators on joystick */
+.joystick-base::before,
+.joystick-base::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.joystick-base::before {
+  /* Left arrow indicator */
+  width: 20px;
+  height: 4px;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.joystick-base::after {
+  /* Right arrow indicator */
+  width: 20px;
+  height: 4px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-height: 500px) {
+  .touch-controls {
+    height: 150px;
+    padding: 10px 20px;
+  }
+
+  .joystick-base {
+    width: 100px;
+    height: 100px;
+  }
+
+  .joystick-stick {
+    width: 45px;
+    height: 45px;
+  }
+
+  .joystick-labels {
+    width: 100px;
+  }
+
+  .aero-btn {
+    width: 80px;
+    height: 80px;
+  }
+
+  .aero-icon {
+    font-size: 1.4rem;
+  }
+
+  .aero-text {
+    font-size: 0.65rem;
+  }
+}
+
+/* Landscape mode on phones - more compact */
+@media (max-height: 400px) and (orientation: landscape) {
+  .touch-controls {
+    height: 120px;
+    padding: 5px 15px;
+  }
+
+  .joystick-base {
+    width: 90px;
+    height: 90px;
+  }
+
+  .joystick-stick {
+    width: 40px;
+    height: 40px;
+  }
+
+  .aero-btn {
+    width: 70px;
+    height: 70px;
+  }
+
+  .joystick-labels {
+    display: none;
+  }
+}
+
+/* Hide touch controls during title/finish screens */
+#title-screen.active ~ .touch-controls,
+#finish-screen:not(.hidden) ~ .touch-controls {
+  display: none !important;
+}

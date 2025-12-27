@@ -1,0 +1,7 @@
+# Projects Directory
+
+Ce dossier contient les projets générés par ULTRA-CREATE.
+
+Chaque projet créé avec /turbo ou /create sera placé ici.
+
+Ce fichier .gitkeep permet de tracker le dossier vide dans git.

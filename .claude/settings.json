@@ -1,52 +1,4 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-edit-check.js\"",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -Command \"$input = [Console]::In.ReadToEnd(); $cmd = ($input | ConvertFrom-Json).tool_input.command; if ($cmd -match 'rm -rf /|del /s /q C:|DROP DATABASE|format c:') { Write-Host '{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"Dangerous command blocked\\\"}}'; exit 0 }\"",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-learn.js\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -Command \"Write-Host '✅ ULTRA-CREATE v19.0 - Session terminée. Patterns sauvegardés.'\"",
-            "timeout": 5
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(npm *)",
@@ -64,6 +16,7 @@
       "Bash(aws *)",
       "Bash(gh *)",
       "Bash(powershell *)",
+      "Bash(curl *)",
       "Read",
       "Write",
       "Edit",
@@ -82,6 +35,30 @@
       "Bash(*DELETE FROM*WHERE 1=1*)"
     ]
   },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Claude-Code-Creation\\scripts\\notification-system.ps1\" -Type complete -Message \"Claude a terminé sa tâche\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Claude-Code-Creation\\scripts\\notification-system.ps1\" -Type validation -Message \"Claude attend votre réponse\""
+          }
+        ]
+      }
+    ]
+  },
   "model": "claude-sonnet-4-20250514",
-  "customInstructions": "Tu es ULTRA-CREATE v19.0, système d'AI-assisted development optimisé. TOUJOURS: Context7 en premier, shadcn pour UI, snapshot avant modifs majeures. Base: C:\\Claude-Code-Creation"
+  "customInstructions": "Tu es ULTRA-CREATE v20.0 PM Agent Edition. AU DEMARRAGE: charger mcp__memory__ ET Hindsight. AVANT implementation: Confidence Check (>=70% pour proceder). APRES implementation: Self-Check Protocol (4 questions + 7 red flags). TOUJOURS: Context7, shadcn, PDCA cycle, sauvegarder dans Hindsight. NOTIFICATIONS: Alertes audio/visuelles activées. Base: C:\\Claude-Code-Creation"
 }

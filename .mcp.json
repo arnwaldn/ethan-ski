@@ -1,11 +1,18 @@
 {
   "mcpServers": {
-    "hindsight": {
-      "_comment": "Hindsight is NOT an MCP server - it's an HTTP REST API. Start separately with: .\\scripts\\start-hindsight.ps1",
+    "docker-mcp": {
+      "_comment": "Docker MCP Gateway - Accès à 100+ MCPs via Docker Desktop. Activer dans Settings > Beta features > MCP Toolkit",
       "type": "stdio",
-      "command": "echo",
-      "args": ["Hindsight must be started separately - run: .\\scripts\\start-hindsight.ps1"],
-      "disabled": true
+      "command": "docker",
+      "args": ["mcp", "gateway", "run"],
+      "env": {}
+    },
+    "hindsight": {
+      "_comment": "Hindsight MCP Bridge - Wraps HTTP API into MCP protocol. Requires: .\\scripts\\start-hindsight.ps1 running",
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Claude-Code-Creation\\scripts\\hindsight-mcp-bridge.js"],
+      "env": {}
     },
     "memory": {
       "type": "stdio",
@@ -347,6 +354,20 @@
       "env": {
         "EXPO_TOKEN": "${EXPO_TOKEN}"
       }
+    },
+    "blender": {
+      "_comment": "Blender MCP - 3D modeling, scene creation, asset generation. Requires Blender addon installed.",
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["blender-mcp"],
+      "env": {}
+    },
+    "unity": {
+      "_comment": "Unity MCP - Unity Editor control, scene creation, C# scripting, builds. Requires Unity package installed.",
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-unity"],
+      "env": {}
     }
   }
 }

@@ -198,4 +198,4 @@ async function mergeWorktrees() {
 
 ---
 
-**Version:** v18.1 | **Max Agents:** 25 | **Isolation:** Git Worktrees | **Sync:** Barrier + Locks
+**Version:** v22.0 | **Max Agents:** 25 | **Isolation:** Git Worktrees | **Sync:** Barrier + Locks | **ULTRA-CREATE:** v22.0

@@ -1,0 +1,8 @@
+# Data Directory
+
+Ce dossier contient les données locales générées par le système:
+- local.db (SQLite)
+- Caches temporaires
+- Fichiers de session
+
+Ce fichier .gitkeep permet de tracker le dossier vide dans git.

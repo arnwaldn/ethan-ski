@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "content": "Trading Brain IA v12.3.0 - Application de trading automatise combinant Electron 27, React 18, TypeScript et Claude AI avec MetaTrader 5. Localisation: C:\\Trading Brain Production. Architecture: 32+ outils MT5, serveurs MCP Python, interface React moderne. Fichiers principaux: main.ts (6162 lignes - logique principale et IPC), mt5-tools-definition-COMPLETE.ts (2118 lignes - definitions des 32 outils MT5), preload.ts (1748 lignes - bridge IPC securise). Fonctionnalites: analyse marche temps reel, execution ordres, gestion positions, integration Claude pour decisions de trading intelligentes."
+    },
+    {
+      "content": "Trading Brain - Outils MT5 disponibles (32 outils): get_account_info, get_positions, get_orders, get_symbol_info, get_market_data, place_order, modify_order, close_position, get_history_deals, get_history_orders, calculate_margin, calculate_profit, get_symbols, get_terminal_info, get_last_error, copy_rates, copy_ticks, market_book_add, market_book_get, market_book_release, orders_get, positions_get, symbol_info_tick, symbol_select, order_calc_margin, order_calc_profit, order_check, order_send, positions_total, orders_total, history_deals_get, history_orders_get."
+    },
+    {
+      "content": "Trading Brain - Stack technique detaillee: Frontend (React 18.2.0, TypeScript 5.0, TailwindCSS, Framer Motion, Recharts pour graphiques, React Query). Backend (Electron 27, IPC securise, Python MCP servers). Integration (Claude AI via Anthropic API, MetaTrader 5 via Python mt5 library). Build (Vite, electron-builder). Structure: src/main (processus principal), src/renderer (UI React), src/preload (bridge IPC), mcp-servers (serveurs Python MT5)."
+    },
+    {
+      "content": "Trading Brain - Serveurs MCP Python: mt5-server.py (serveur principal MT5, connexion terminal, execution trades), mt5-data-server.py (donnees marche temps reel, historique), mt5-analysis-server.py (analyse technique, indicateurs). Ces serveurs communiquent via stdio avec le processus Electron principal. Configuration dans mcp-config.json. Logs dans logs/ directory."
+    }
+  ]
+}

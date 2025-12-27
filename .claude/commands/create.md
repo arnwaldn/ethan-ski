@@ -1,45 +1,55 @@
-# /create - Créer un nouveau projet
+# /create - Création Autonome de Projet
 
-Crée un projet complet et professionnel de A à Z.
+## Mode Autonome ULTRA-CREATE
 
-## Usage
+Tu es en mode **création autonome**. Crée un projet complet sans intervention humaine.
+
+## Instructions
+
+1. **Analyser** la demande: $ARGUMENTS
+2. **Déterminer** le type de projet (saas, landing, api, mobile)
+3. **Utiliser** le template approprié depuis `C:\Claude-Code-Creation\templates\`
+4. **Personnaliser** avec les variables du projet
+5. **Valider** automatiquement avec pre-deploy.js
+6. **Rapporter** le résultat
+
+## Workflow Obligatoire
+
+### Étape 1: Context7 (TOUJOURS)
+Récupère la documentation à jour du framework principal avant de coder.
+
+### Étape 2: Template Engine
+```javascript
+// Utilise le système de templates
+const { AutonomousOrchestrator } = require('./scripts/autonomous/orchestrator')
+const orchestrator = new AutonomousOrchestrator()
+await orchestrator.createProject(description, projectName)
 ```
-/create [type] [nom] [options]
+
+### Étape 3: Personnalisation
+Remplace toutes les variables {{VAR}} dans les fichiers générés.
+
+### Étape 4: Validation
+Exécute `node scripts/hooks/pre-deploy.js <project-path>` pour valider.
+
+### Étape 5: Rapport
+Affiche:
+- ✅ Fichiers créés
+- 📁 Chemin du projet
+- 📝 Commandes pour démarrer
+
+## Types de Projet
+
+| Type | Template | Temps estimé |
+|------|----------|--------------|
+| saas | Dashboard + Auth + Billing | 15-20 min |
+| landing | Hero + Features + Pricing | 10-15 min |
+| api | REST + Validation + Auth | 10-15 min |
+
+## Exemple
+
+```
+/create saas "Application de gestion de factures pour freelances"
 ```
 
-## Types disponibles
-- `web` - Application web Next.js
-- `saas` - SaaS avec auth et paiements
-- `ecommerce` - Boutique e-commerce
-- `dashboard` - Dashboard admin
-- `landing` - Landing page
-- `mobile` - Application mobile Expo
-- `desktop` - Application desktop Tauri
-- `api` - API FastAPI/Express
-
-## Exemples
-```
-/create saas MonSaaS
-/create mobile MaSupperApp
-/create ecommerce MaBoutique
-```
-
-## Ce qui est créé
-1. Structure du projet complète
-2. Configuration TypeScript
-3. UI avec shadcn/ui
-4. Authentication (si applicable)
-5. Database schema (si applicable)
-6. Tests de base
-7. CI/CD GitHub Actions
-8. README.md
-9. .env.example
-
-## Workflow
-1. Analyse de la demande
-2. Sélection de la stack optimale
-3. Création de la structure
-4. Installation des dépendances
-5. Configuration initiale
-6. Git init + premier commit
-7. Instructions de démarrage
+Résultat: Projet complet avec dashboard, auth Clerk, billing Stripe.

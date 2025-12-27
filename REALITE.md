@@ -18,7 +18,7 @@ Les "agents" sont des fichiers `.md` contenant des instructions pour Claude Code
 Quand tu dis "Mode fullstack-super", Claude lit ces instructions et les suit.
 
 ### 2. Organise les MCPs par Usage
-Le systeme categorise les 47 MCPs disponibles:
+Le systeme categorise les 48 MCPs disponibles:
 - **Context7**: Documentation (PRIORITE 1)
 - **shadcn**: UI components
 - **Supabase**: Backend

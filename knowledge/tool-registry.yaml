@@ -1,0 +1,708 @@
+# ULTRA-CREATE TOOL REGISTRY v23.1
+# Conscience complete des outils disponibles sur ce systeme
+# Unity Enhancement v23.1 - 6 templates, 9 agents, 36 knowledge docs
+
+version: "23.1"
+last_updated: "2025-12-23"
+
+# ============================================================================
+# OUTILS 3D / GAME DEVELOPMENT
+# ============================================================================
+3d_game:
+  blender:
+    name: "Blender"
+    version: "5.0"
+    path: "C:\\Program Files\\Blender Foundation\\Blender 5.0"
+    mcp: "blender"
+    status: "configured"
+    capabilities:
+      - modeling_3d
+      - animation
+      - rendering
+      - sculpting
+      - texturing
+      - video_editing
+      - python_scripting
+    use_when:
+      - "3D assets"
+      - "animations"
+      - "renders"
+      - "game assets"
+      - "modeles 3D"
+      - "sculpting"
+    file_types: [".blend", ".fbx", ".obj", ".gltf", ".glb"]
+
+  unity:
+    name: "Unity Hub"
+    path: "C:\\Program Files\\Unity Hub"
+    mcp: "unity"
+    status: "configured"
+    versions:
+      - "2022.3"
+      - "6000.0"
+      - "6000.3"
+      - "6000.4"
+      - "6000.5"
+    capabilities:
+      - game_development
+      - 2d_games
+      - 3d_games
+      - vr_ar
+      - mobile_games
+      - simulations
+      - csharp_scripting
+    use_when:
+      - "jeux"
+      - "games"
+      - "VR"
+      - "AR"
+      - "simulations"
+      - "apps interactives"
+      - "Unity"
+    file_types: [".unity", ".prefab", ".asset", ".cs"]
+
+  godot:
+    name: "Godot Engine"
+    mcp: "godot"
+    status: "configured"
+    capabilities:
+      - game_development
+      - 2d_games
+      - 3d_games
+      - gdscript
+      - open_source
+    use_when:
+      - "jeux indie"
+      - "2D games"
+      - "open source games"
+      - "Godot"
+      - "GDScript"
+    file_types: [".tscn", ".tres", ".gd"]
+
+# ============================================================================
+# TRADING / FINANCE
+# ============================================================================
+trading:
+  metatrader5:
+    name: "MetaTrader 5"
+    path: "C:\\Program Files\\FTMO MT5"
+    mcp: null  # Pas de MCP, utiliser Python/MQL5
+    status: "installed"
+    capabilities:
+      - forex_trading
+      - backtesting
+      - expert_advisors
+      - indicators
+      - market_data
+      - algo_trading
+    use_when:
+      - "trading"
+      - "forex"
+      - "backtests"
+      - "EAs"
+      - "Expert Advisors"
+      - "indicateurs MT5"
+      - "MQL5"
+    file_types: [".mq5", ".ex5", ".mqh"]
+
+  trading_brain:
+    name: "Trading Brain"
+    path: "C:\\Trading Brain Production"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - trading_signals
+      - portfolio_analysis
+      - market_analysis
+    use_when:
+      - "signals trading"
+      - "portfolio"
+      - "Trading Brain"
+
+# ============================================================================
+# IA LOCALE
+# ============================================================================
+ai_local:
+  ollama:
+    name: "Ollama"
+    version: "0.13.5"
+    mcp: "ollama"
+    status: "configured"
+    host: "http://localhost:11434"
+    capabilities:
+      - text_generation
+      - code_generation
+      - embeddings
+      - local_llm
+      - offline_ai
+    models_available:
+      - llama3
+      - codellama
+      - mistral
+      - phi
+      - gemma
+    use_when:
+      - "offline AI"
+      - "IA locale"
+      - "embeddings locaux"
+      - "RAG local"
+      - "privacy"
+      - "LLM local"
+      - "Ollama"
+
+# ============================================================================
+# MULTIMEDIA
+# ============================================================================
+multimedia:
+  ffmpeg:
+    name: "FFmpeg"
+    version: "8.0.1"
+    mcp: "ffmpeg-ai"
+    status: "configured"
+    capabilities:
+      - video_conversion
+      - audio_conversion
+      - video_editing
+      - frame_extraction
+      - compression
+      - streaming
+      - format_detection
+    use_when:
+      - "video"
+      - "audio"
+      - "conversion"
+      - "compression"
+      - "streaming"
+      - "extraction frames"
+      - "FFmpeg"
+    file_types: [".mp4", ".mkv", ".avi", ".mov", ".mp3", ".wav", ".flac"]
+
+  imagemagick:
+    name: "ImageMagick"
+    version: "7.1.2"
+    mcp: "imagemagick"
+    status: "configured"
+    capabilities:
+      - image_resize
+      - image_crop
+      - format_conversion
+      - effects
+      - batch_processing
+      - thumbnails
+      - watermarks
+    use_when:
+      - "images"
+      - "thumbnails"
+      - "batch processing"
+      - "conversion images"
+      - "resize"
+      - "crop"
+      - "ImageMagick"
+    file_types: [".jpg", ".png", ".gif", ".webp", ".svg", ".tiff", ".bmp"]
+
+# ============================================================================
+# DATABASES
+# ============================================================================
+databases:
+  postgresql:
+    name: "PostgreSQL"
+    mcp: "postgres"
+    status: "configured"
+    capabilities:
+      - sql_queries
+      - transactions
+      - json_support
+      - full_text_search
+      - extensions
+    use_when:
+      - "SQL"
+      - "PostgreSQL"
+      - "database relationnelle"
+      - "Supabase local"
+
+  mongodb:
+    name: "MongoDB"
+    mcp: "mongodb"
+    status: "configured"
+    uri: "mongodb://localhost:27017"
+    capabilities:
+      - nosql
+      - documents
+      - aggregation
+      - flexible_schema
+      - json_storage
+    use_when:
+      - "NoSQL"
+      - "documents"
+      - "MongoDB"
+      - "flexible schema"
+
+  sql_server:
+    name: "SQL Server"
+    path: "C:\\Program Files\\Microsoft SQL Server"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - enterprise_sql
+      - reporting
+      - integration_services
+    use_when:
+      - "enterprise SQL"
+      - "SQL Server"
+      - "SSMS"
+      - ".NET backend"
+
+# ============================================================================
+# DEVELOPMENT TOOLS
+# ============================================================================
+development:
+  python:
+    name: "Python"
+    versions: ["3.14", "3.11"]
+    mcp: null  # Via E2B ou Bash
+    status: "installed"
+    capabilities:
+      - scripting
+      - machine_learning
+      - data_science
+      - automation
+      - web_frameworks
+    use_when:
+      - "Python"
+      - "ML"
+      - "machine learning"
+      - "data science"
+      - "automation"
+      - "scripts"
+
+  nodejs:
+    name: "Node.js"
+    version: "22.x"
+    mcp: null  # Via Bash
+    status: "installed"
+    capabilities:
+      - javascript_runtime
+      - npm_packages
+      - backend_dev
+      - cli_tools
+    use_when:
+      - "JavaScript"
+      - "Node.js"
+      - "npm"
+      - "backend JS"
+
+  rust:
+    name: "Rust"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - systems_programming
+      - performance
+      - wasm
+      - cli_tools
+    use_when:
+      - "Rust"
+      - "performance critique"
+      - "systemes"
+      - "CLI tools"
+      - "WebAssembly"
+
+  go:
+    name: "Go"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - backend_dev
+      - cli_tools
+      - concurrency
+      - microservices
+    use_when:
+      - "Go"
+      - "Golang"
+      - "microservices"
+      - "haute concurrence"
+
+  java:
+    name: "Java"
+    version: "21"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - enterprise_dev
+      - android
+      - spring_boot
+    use_when:
+      - "Java"
+      - "Spring"
+      - "enterprise"
+      - "Android native"
+
+# ============================================================================
+# DEVOPS / CLOUD
+# ============================================================================
+devops:
+  docker:
+    name: "Docker"
+    mcp: null  # Via Bash
+    status: "installed"
+    capabilities:
+      - containers
+      - compose
+      - images
+      - orchestration
+    use_when:
+      - "Docker"
+      - "conteneurisation"
+      - "containers"
+      - "isolation"
+
+  kubernetes:
+    name: "Kubernetes"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - orchestration
+      - scaling
+      - deployment
+    use_when:
+      - "Kubernetes"
+      - "k8s"
+      - "orchestration"
+
+  terraform:
+    name: "Terraform"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - infrastructure_as_code
+      - multi_cloud
+      - state_management
+    use_when:
+      - "Terraform"
+      - "infrastructure as code"
+      - "IaC"
+      - "multi-cloud"
+
+cloud_cli:
+  aws:
+    name: "AWS CLI"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - s3
+      - ec2
+      - lambda
+      - iam
+    use_when:
+      - "AWS"
+      - "S3"
+      - "Lambda"
+      - "Amazon cloud"
+
+  azure:
+    name: "Azure CLI"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - azure_services
+      - devops
+    use_when:
+      - "Azure"
+      - "Microsoft cloud"
+
+  gcloud:
+    name: "Google Cloud CLI"
+    mcp: null
+    status: "installed"
+    capabilities:
+      - gcp_services
+      - firebase
+    use_when:
+      - "Google Cloud"
+      - "GCP"
+      - "Firebase"
+
+# ============================================================================
+# PROJECT TYPE MAPPING (Selection automatique)
+# ============================================================================
+project_mapping:
+  # Jeux Web (v23.0)
+  "jeu 2D":
+    primary: [phaser]
+    template: game-web
+    mcps: [context7]
+    agent: phaser-expert
+
+  "jeu 2D web":
+    primary: [phaser]
+    template: game-web
+    mcps: [context7]
+    agent: phaser-expert
+
+  "jeu 3D web":
+    primary: [three.js, cannon-es, howler]
+    template: game-3d-web
+    mcps: [context7]
+    agent: threejs-game-expert
+
+  "3D game":
+    primary: [three.js, cannon-es]
+    template: game-3d-web
+    mcps: [context7]
+    agent: threejs-game-expert
+
+  "racing game":
+    primary: [three.js, cannon-es]
+    template: game-3d-web
+    mcps: [context7]
+    agent: threejs-game-expert
+
+  "jeu multiplayer":
+    primary: [phaser, colyseus]
+    template: game-multiplayer
+    mcps: [context7]
+    agent: networking-expert
+
+  "multiplayer game":
+    primary: [phaser, colyseus]
+    template: game-multiplayer
+    mcps: [context7]
+    agent: networking-expert
+
+  "online game":
+    primary: [phaser, colyseus]
+    template: game-multiplayer
+    mcps: [context7]
+    agent: networking-expert
+
+  "roguelike":
+    primary: [phaser, rot.js]
+    template: game-roguelike
+    mcps: [context7]
+    agent: procgen-expert
+
+  "dungeon crawler":
+    primary: [phaser, rot.js]
+    template: game-roguelike
+    mcps: [context7]
+    agent: procgen-expert
+
+  "procedural game":
+    primary: [phaser, rot.js]
+    template: game-roguelike
+    mcps: [context7]
+    agent: procgen-expert
+
+  "puzzle game":
+    primary: [phaser]
+    template: game-puzzle
+    mcps: [context7]
+    agent: phaser-expert
+
+  "2048":
+    primary: [phaser]
+    template: game-puzzle
+    mcps: [context7]
+
+  "match-3":
+    primary: [phaser]
+    template: game-puzzle
+    mcps: [context7]
+
+  "jeu web":
+    primary: [phaser, three.js]
+    mcps: [context7]
+
+  # Jeux Natifs
+  "jeu 3D":
+    primary: [unity, blender]
+    secondary: [ffmpeg]
+    mcps: [unity, blender]
+
+  "jeu godot":
+    primary: [godot]
+    mcps: [context7, godot]
+    agent: godot-expert
+
+  "godot game":
+    primary: [godot]
+    mcps: [context7, godot]
+    agent: godot-expert
+
+  # Unity Native Games (v23.1)
+  "jeu Unity":
+    primary: [unity, blender]
+    template: unity-game
+    mcps: [context7, unity, blender]
+    agent: unity-expert
+
+  "Unity game":
+    primary: [unity, blender]
+    template: unity-game
+    mcps: [context7, unity, blender]
+    agent: unity-expert
+
+  "jeu VR":
+    primary: [unity]
+    template: unity-game
+    mcps: [context7, unity]
+    agent: unity-expert
+
+  "VR game":
+    primary: [unity]
+    template: unity-game
+    mcps: [context7, unity]
+    agent: unity-expert
+
+  "jeu AR":
+    primary: [unity]
+    template: unity-game
+    mcps: [context7, unity]
+    agent: unity-expert
+
+  "jeu console":
+    primary: [unity]
+    template: unity-game
+    mcps: [context7, unity]
+    agent: unity-expert
+
+  "console game":
+    primary: [unity]
+    template: unity-game
+    mcps: [context7, unity]
+    agent: unity-expert
+
+  "jeu Quest":
+    primary: [unity]
+    template: unity-game
+    mcps: [context7, unity]
+    agent: unity-expert
+
+  "AAA game":
+    primary: [unity, blender]
+    template: unity-game
+    mcps: [context7, unity, blender]
+    agent: unity-expert
+
+  # Applications
+  "SaaS":
+    primary: [nextjs, supabase, stripe]
+    mcps: [context7, shadcn, supabase]
+
+  "landing page":
+    primary: [nextjs, tailwindcss]
+    mcps: [context7, shadcn]
+
+  "mobile":
+    primary: [expo, react-native]
+    mcps: [context7]
+
+  "desktop":
+    primary: [tauri, electron]
+    mcps: [context7, desktop-commander]
+
+  # Trading
+  "EA MT5":
+    primary: [metatrader5, python]
+    mcps: [hindsight]
+
+  "indicateur MT5":
+    primary: [metatrader5]
+    mcps: [hindsight]
+
+  "analyse trading":
+    primary: [python, trading_brain]
+    mcps: [hindsight, e2b]
+
+  # 3D / Multimedia
+  "assets 3D":
+    primary: [blender]
+    mcps: [blender]
+
+  "traitement video":
+    primary: [ffmpeg]
+    mcps: [ffmpeg-ai, desktop-commander]
+
+  "traitement images":
+    primary: [imagemagick]
+    mcps: [imagemagick]
+
+  # IA
+  "RAG local":
+    primary: [ollama, python]
+    mcps: [ollama, postgres]
+
+  "chatbot":
+    primary: [nextjs, ollama]
+    mcps: [context7, ollama]
+
+  "embeddings":
+    primary: [ollama, python]
+    mcps: [ollama]
+
+  # Data
+  "data analysis":
+    primary: [python, postgresql]
+    mcps: [postgres, e2b]
+
+  "ETL":
+    primary: [python, postgresql]
+    mcps: [postgres]
+
+# ============================================================================
+# MCPS ACTIFS (51+ configures)
+# ============================================================================
+active_mcps:
+  core:
+    - hindsight       # Memoire persistante
+    - memory          # Graphe connaissances
+    - context7        # Docs framework
+    - sequential-thinking  # Architecture
+
+  development:
+    - github          # Git/repos
+    - git             # Operations git
+    - supabase        # Backend/DB
+    - postgres        # SQL direct
+
+  ui_design:
+    - shadcn          # Composants UI
+    - figma           # Design
+    - mermaid         # Diagrammes
+
+  browser:
+    - playwright      # Browser automation
+    - puppeteer       # Browser automation
+    - firecrawl       # Web scraping
+
+  desktop:
+    - desktop-commander    # Fichiers/process
+    - desktop-automation   # Automation desktop
+    - filesystem          # Fichiers
+
+  cloud:
+    - fetch           # HTTP requests
+    - notion          # Notion API
+
+  research:
+    - exa             # Web search
+
+  code_execution:
+    - e2b             # Python sandbox
+
+  3d_game:
+    - blender         # 3D modeling
+    - unity           # Game dev
+    - godot           # Game dev
+
+  multimedia:
+    - ffmpeg-ai       # Video/audio
+    - imagemagick     # Images
+    - video-editor    # Video editing
+    - remotion        # Video creation
+
+  ai_local:
+    - ollama          # LLM local
+
+  databases:
+    - mongodb         # NoSQL

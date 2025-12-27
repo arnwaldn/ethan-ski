@@ -178,4 +178,4 @@ Deploy URL: https://facturation.pages.dev
 
 ---
 
-**Version:** v18.1 | **Max Agents:** 25 | **Checkpoints:** Auto | **Memory:** Persistent
+**Version:** v22.0 | **Max Agents:** 25 | **Checkpoints:** Auto | **Memory:** Persistent | **ULTRA-CREATE:** v22.0
