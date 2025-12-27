@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0a1628" />
+  <title>Ethan Superstars du Ski</title>
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <!-- Fullscreen Button -->
+  <button id="fullscreen-btn" class="fullscreen-btn" title="Plein écran">⛶</button>
+
+  <!-- Game UI Overlay -->
+  <div id="game-ui">
+    <!-- Title Screen -->
+    <div id="title-screen" class="screen active">
+      <div class="title-content">
+        <!-- Character Display - Ethan's portrait -->
+        <div class="character-display">
+          <img src="./ethan-character.jpg" alt="Ethan" class="character-image" id="character-image">
+          <div class="character-name">ETHAN</div>
+        </div>
+
+        <div class="title-logo">
+          <span class="title-ski">SUPERSTARS</span>
+          <span class="title-challenge">DU SKI</span>
+          <span class="title-credit">Créé par Arnaud Porcel</span>
+        </div>
+
+        <button id="start-btn" class="game-btn primary">
+          <span>DÉPART</span>
+        </button>
+
+        <div class="controls-hint">
+          <div class="control-row">
+            <span class="key">← →</span> ou <span class="key">A D</span> Tourner
+          </div>
+          <div class="control-row">
+            <span class="key">↓</span> ou <span class="key">S</span> Position aéro
+          </div>
+        </div>
+      </div>
+      <div class="snow-overlay"></div>
+    </div>
+
+    <!-- HUD (Racing) -->
+    <div id="hud" class="hidden">
+      <!-- Top bar - Time and Speed -->
+      <div class="hud-top">
+        <div class="stat-box time-box">
+          <div class="stat-label">TEMPS</div>
+          <div class="stat-value" id="time-value">0:00.00</div>
+        </div>
+
+        <div class="stat-box speed-box">
+          <div class="stat-value" id="speed-value">0</div>
+          <div class="stat-unit">km/h</div>
+        </div>
+
+        <div class="stat-box gates-box">
+          <div class="stat-label">PORTES</div>
+          <div class="stat-value" id="gates-value">0/0</div>
+        </div>
+      </div>
+
+      <!-- Penalties -->
+      <div id="penalties-box" class="penalties-box hidden">
+        <span class="penalty-icon">⚠️</span>
+        <span id="penalties-value">+0.0s</span>
+      </div>
+
+      <!-- Countdown -->
+      <div id="countdown" class="countdown hidden">3</div>
+
+      <!-- Penalty notification -->
+      <div id="penalty" class="penalty-notification hidden">
+        <span>PORTE MANQUÉE</span>
+        <span class="penalty-time">+2.0s</span>
+      </div>
+
+      <!-- Split time -->
+      <div id="split-time" class="split-time hidden">0:00.00</div>
+
+      <!-- Progress bar -->
+      <div class="hud-progress">
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <div class="progress-labels">
+            <span>🏔️ DÉPART</span>
+            <span>🏁 ARRIVÉE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Finish Screen -->
+    <div id="finish-screen" class="screen hidden">
+      <div class="finish-content">
+        <div class="finish-flag">🏁</div>
+        <h2>COURSE TERMINÉE</h2>
+
+        <div class="results-card">
+          <div class="result-row main-result">
+            <span class="result-label">Temps de course</span>
+            <span id="final-time" class="result-value">0:00.00</span>
+          </div>
+
+          <div class="result-row penalty-row">
+            <span class="result-label">Pénalités</span>
+            <span id="final-penalties" class="result-value penalty">+0.0s</span>
+          </div>
+
+          <div class="result-divider"></div>
+
+          <div class="result-row total-row">
+            <span class="result-label">TEMPS TOTAL</span>
+            <span id="final-total" class="result-value total">0:00.00</span>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-icon">🎿</span>
+            <span id="final-speed" class="stat-val">0 km/h</span>
+            <span class="stat-desc">Vitesse max</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🚩</span>
+            <span id="final-gates" class="stat-val">0/55</span>
+            <span class="stat-desc">Portes passées</span>
+          </div>
+        </div>
+
+        <!-- New Record Input -->
+        <div id="new-record-section" class="new-record-section hidden">
+          <div class="new-record-badge">🏆 NOUVEAU RECORD !</div>
+          <div class="new-record-input-row">
+            <input type="text" id="player-name-input" class="player-name-input"
+                   placeholder="Entrez votre nom" maxlength="15" />
+            <button id="save-record-btn" class="game-btn save-btn">OK</button>
+          </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboard-section" class="leaderboard-section">
+          <div class="leaderboard-title">🏅 MEILLEURS TEMPS</div>
+          <div id="leaderboard-list" class="leaderboard-list">
+            <div class="leaderboard-empty">Aucun record pour l'instant</div>
+          </div>
+        </div>
+
+        <button id="retry-btn" class="game-btn primary">REJOUER</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p id="loading-text">Préparation de la piste...</p>
+      <div class="loading-bar">
+        <div id="loading-bar-fill" class="loading-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="game-canvas"></canvas>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
