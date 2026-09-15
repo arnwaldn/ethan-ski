@@ -306,6 +306,21 @@ body {
   font-size: 0.75rem;
 }
 
+/* Phones and tablets play with the on-screen joystick, not the keyboard */
+.controls-hint.touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .touch-enabled .controls-hint.keyboard {
+    display: none;
+  }
+
+  .touch-enabled .controls-hint.touch {
+    display: block;
+  }
+}
+
 .control-row {
   margin: 6px 0;
   display: flex;
@@ -447,7 +462,7 @@ body {
 /* ===== PENALTIES BOX ===== */
 .penalties-box {
   position: absolute;
-  top: 90px;
+  top: 110px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 60, 60, 0.9);
@@ -799,6 +814,15 @@ body {
   .countdown {
     font-size: 5rem;
   }
+
+  /* The HUD boxes wrap onto two rows: keep the penalty banners below them */
+  .penalties-box {
+    top: 165px;
+  }
+
+  .penalty-notification {
+    top: 215px;
+  }
 }
 
 /* ===== FULLSCREEN BUTTON ===== */
@@ -887,6 +911,20 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+}
+
+/* Progress bar clear of the joystick and the AÉRO button:
+   above them in portrait, between them in landscape (never across the skier) */
+@media (orientation: portrait) {
+  .touch-enabled .hud-progress {
+    bottom: 210px;
+  }
+}
+
+@media (orientation: landscape) {
+  .touch-enabled .hud-progress {
+    width: calc(100% - 260px);
+  }
 }
 
 /* Joystick Zone (left side) */
