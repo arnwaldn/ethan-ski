@@ -62,6 +62,7 @@ import {
   startGameAudio,
   stopGameAudio,
   updateGameAudio,
+  updateMusic,
   playGatePass,
   playGateMiss,
   playCountdownBeep,
@@ -3854,6 +3855,7 @@ function animate() {
   updateSprayParticles();
 
   // Update audio based on game state
+  updateMusic();
   if (state.phase === 'racing') {
     updateGameAudio(state.speed, GAME.MAX_SPEED, state.lateralSpeed, state.isTucking);
   }

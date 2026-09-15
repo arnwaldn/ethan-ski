@@ -1107,14 +1107,23 @@ function scheduleHiHat(time: number): void {
 
 /**
  * Scheduler - runs ahead of time to schedule notes
- * CRITICAL: Uses 500ms lookahead to survive main thread blocking during animations
+ * Called from the render loop (updateMusic) as well as setInterval: Chrome starves
+ * timers while a heavy WebGL frame loop runs (gaps of up to 6 s measured), whereas
+ * requestAnimationFrame keeps firing.
  */
 function scheduler(): void {
   if (!audioContext || !musicPlaying) return;
 
-  // Schedule notes 500ms ahead - this survives heavy animation frame drops
+  // After a stall, skip the missed steps instead of scheduling notes in the past
+  if (nextNoteTime < audioContext.currentTime) {
+    const missedSteps = Math.ceil((audioContext.currentTime - nextNoteTime) / STEP_TIME);
+    currentStep += missedSteps;
+    nextNoteTime += missedSteps * STEP_TIME;
+  }
+
+  // Schedule notes 3 s ahead - this survives heavy animation frame drops
   // The audio thread plays scheduled notes on time regardless of main thread
-  while (nextNoteTime < audioContext.currentTime + 0.5) {
+  while (nextNoteTime < audioContext.currentTime + 3) {
     const step = currentStep % 64;
     const drumStep = currentStep % 16;
 
@@ -1182,6 +1191,13 @@ export function startBackgroundMusic(): void {
   } catch (e) {
     console.warn('Failed to start music:', e);
   }
+}
+
+/**
+ * Keep the music scheduled - call once per rendered frame
+ */
+export function updateMusic(): void {
+  scheduler();
 }
 
 /**
