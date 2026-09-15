@@ -4045,7 +4045,8 @@ function setupTouchControls() {
   });
 
   function handleJoystickMove(e: TouchEvent) {
-    const touch = e.touches[0];
+    // The finger that started on the joystick, not the first one on screen (the thumb holding AÉRO)
+    const touch = e.targetTouches[0];
     let deltaX = touch.clientX - joystickCenterX;
     let deltaY = touch.clientY - joystickCenterY;
 
