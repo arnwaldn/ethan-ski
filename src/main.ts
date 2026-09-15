@@ -4,6 +4,7 @@
  */
 
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 // New professional systems v3.0
 import {
@@ -725,6 +726,48 @@ interface Spectator {
   hasFlag: boolean;
 }
 
+/**
+ * Merge the meshes under `root` into one mesh per distinct material (transforms baked
+ * relative to root). The finish area holds ~3,200 small meshes: once in camera range
+ * they multiplied draw calls by six and doubled frame time.
+ */
+function mergeMeshesByMaterial(
+  root: THREE.Object3D,
+  include: (mesh: THREE.Mesh) => boolean = () => true
+): THREE.Group {
+  root.updateMatrixWorld(true);
+  const toRoot = root.matrixWorld.clone().invert();
+  const buckets = new Map<string, { mesh: THREE.Mesh; geometries: THREE.BufferGeometry[] }>();
+
+  root.traverse((obj) => {
+    const mesh = obj as THREE.Mesh;
+    if (!mesh.isMesh || Array.isArray(mesh.material) || !include(mesh)) return;
+
+    const geometry = mesh.geometry.index ? mesh.geometry.toNonIndexed() : mesh.geometry.clone();
+    for (const name of Object.keys(geometry.attributes)) {
+      if (!['position', 'normal', 'uv', 'color'].includes(name)) geometry.deleteAttribute(name);
+    }
+    geometry.applyMatrix4(new THREE.Matrix4().multiplyMatrices(toRoot, mesh.matrixWorld));
+
+    // Spectators create a material each: group identical ones by their parameters
+    const { uuid, name, ...params } = (mesh.material as THREE.Material).toJSON();
+    const key = `${JSON.stringify(params)}|${mesh.castShadow}|${mesh.receiveShadow}|${Object.keys(geometry.attributes).sort().join()}`;
+    const bucket = buckets.get(key);
+    if (bucket) bucket.geometries.push(geometry);
+    else buckets.set(key, { mesh, geometries: [geometry] });
+  });
+
+  const merged = new THREE.Group();
+  for (const { mesh, geometries } of buckets.values()) {
+    const combined = new THREE.Mesh(mergeGeometries(geometries), mesh.material);
+    combined.castShadow = mesh.castShadow;
+    combined.receiveShadow = mesh.receiveShadow;
+    merged.add(combined);
+    geometries.forEach((g) => g.dispose());
+  }
+  return merged;
+}
+
 let spectators: Spectator[] = [];
 let finishArena: THREE.Group;
 let confettiParticles: THREE.Points | null = null;
@@ -1056,6 +1099,13 @@ function createFinishArena() {
   confettiParticles.visible = false;
   finishArena.add(confettiParticles);
 
+  // Static stand-in for the crowd, shown until the spectators start cheering
+  const spectatorMeshes = new Set<THREE.Object3D>();
+  spectators.forEach((spec) => spec.group.traverse((obj) => spectatorMeshes.add(obj)));
+  spectatorCrowd = mergeMeshesByMaterial(finishArena, (mesh) => spectatorMeshes.has(mesh));
+  finishArena.add(spectatorCrowd);
+  showAnimatedSpectators(false);
+
   scene.add(finishArena);
   console.log(`  ✓ Arène d'arrivée (${spectators.length} spectators, grandstands, confetti)`);
 }
@@ -1063,6 +1113,12 @@ function createFinishArena() {
 // Animate spectators and confetti
 let spectatorsCheering = false;
 let confettiActive = false;
+let spectatorCrowd: THREE.Group;
+
+function showAnimatedSpectators(animated: boolean) {
+  spectatorCrowd.visible = !animated;
+  spectators.forEach((spec) => { spec.group.visible = animated; });
+}
 
 function updateSpectators(time: number) {
   if (!spectatorsCheering) return;
@@ -1137,6 +1193,7 @@ function updateSpectators(time: number) {
 function startSpectatorsCheering() {
   spectatorsCheering = true;
   confettiActive = true;
+  showAnimatedSpectators(true);
 
   if (confettiParticles) {
     confettiParticles.visible = true;
@@ -1158,6 +1215,7 @@ function stopSpectatorsCheering() {
       spec.flag.rotation.set(0, 0, 0);
     }
   });
+  showAnimatedSpectators(false);
 
   // Hide confetti
   if (confettiParticles) {
@@ -2112,6 +2170,8 @@ function createSkiResortVillage() {
   welcomeSign.position.set(0, resortBaseY, -resortStartZ - 10);
   skiResort.add(welcomeSign)
 
+  // The village is static: draw it in one call per material instead of one per mesh
+  skiResort = mergeMeshesByMaterial(skiResort);
   scene.add(skiResort);
   console.log('  ✓ French Ski Resort Village');
 }
