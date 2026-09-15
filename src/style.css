@@ -137,6 +137,22 @@ body {
   overflow-y: auto;
 }
 
+/* Phones held sideways: portrait beside the title instead of above it, so DÉPART fits */
+@media (orientation: landscape) and (max-height: 500px) {
+  .title-content {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 48px;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .character-display {
+    grid-row: 1 / span 4;
+    margin-bottom: 0;
+  }
+}
+
 /* Title Logo */
 .title-logo {
   margin-bottom: 5px;
